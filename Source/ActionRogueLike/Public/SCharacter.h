@@ -20,17 +20,23 @@ public:
 
 protected:
 
-	UPROPERTY(VisibleAnywhere)
-	USpringArmComponent* SpringArmComp;
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<AActor> ProjectileClass;
 
 	UPROPERTY(VisibleAnywhere)
-	UCameraComponent* CameraComp;
+		USpringArmComponent* SpringArmComp;
+
+	UPROPERTY(VisibleAnywhere)
+		UCameraComponent* CameraComp;
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	void MoveForward(float Value);
+
 	void MoveRight(float Value);
+
+	void PrimaryAttack();
 
 public:	
 	// Called every frame
