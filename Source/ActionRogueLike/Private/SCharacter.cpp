@@ -83,6 +83,7 @@ void ASCharacter::PrimaryAttack()
 
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	SpawnParams.Instigator = this;
 
 	GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);
 }
@@ -95,10 +96,6 @@ void ASCharacter::PrimaryInteract()
 	}
 }
 
-void ASCharacter::Jump()
-{
-	Super::Jump();
-}
 
 // Called every frame
 void ASCharacter::Tick(float DeltaTime)
@@ -120,6 +117,6 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	PlayerInputComponent->BindAction("PrimaryAttack", IE_Pressed, this, &ASCharacter::PrimaryAttack);
 	PlayerInputComponent->BindAction("PrimaryInteract", IE_Pressed, this, &ASCharacter::PrimaryInteract);
 
-	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ASCharacter::Jump);
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, Super::Jump);
 }
 
