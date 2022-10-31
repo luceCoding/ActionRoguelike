@@ -30,6 +30,12 @@ ASCharacter::ASCharacter()
 	AttackAnimDelay = 0.2f;
 }
 
+void ASCharacter::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+	AttributeComp->OnHealthChanged.AddDynamic(this, &ASCharacter::OnHealthChanged);
+}
+
 void ASCharacter::PrimaryAttack_TimeElapsed()
 {
 	SpawnProjectile(ProjectileClass);
@@ -92,7 +98,7 @@ void ASCharacter::BlackHoleAttack()
 {
 	PlayAnimMontage(AttackAnim);
 
-	GetWorldTimerManager().SetTimer(TimerHandle_Dash, this, &ASCharacter::BlackholeAttack_TimeElapsed, AttackAnimDelay);
+	GetWorldTimerManager().SetTimer(TimerHandle_Blackhole, this, &ASCharacter::BlackholeAttack_TimeElapsed, AttackAnimDelay);
 }
 
 void ASCharacter::Dash_TimeElapsed()
@@ -103,6 +109,16 @@ void ASCharacter::Dash_TimeElapsed()
 void ASCharacter::BlackholeAttack_TimeElapsed()
 {
 	SpawnProjectile(BlackHoleProjectileClass);
+}
+
+void ASCharacter::OnHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float NewHealth,
+	float Delta)
+{
+	if (NewHealth <= 0.0f && Delta < 0.0f)
+	{
+		APlayerController* PC = Cast<APlayerController>(GetController());
+		DisableInput(PC);
+	}
 }
 
 // Called to bind functionality to input
