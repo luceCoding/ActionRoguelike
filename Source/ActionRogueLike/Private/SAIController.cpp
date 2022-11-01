@@ -9,8 +9,12 @@ void ASAIController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	RunBehaviorTree(BehaviorTree);
+	if (ensureMsgf(BehaviorTree, TEXT("Behavior Tree is nullptr! Please assign BehaviorTree in your AIController.")))
+	{
+		RunBehaviorTree(BehaviorTree);
+	}
 
+	/*
 	APawn* MyPawn = UGameplayStatics::GetPlayerPawn(this, 0);
 	if (MyPawn)
 	{
@@ -18,4 +22,5 @@ void ASAIController::BeginPlay()
 
 		GetBlackboardComponent()->SetValueAsObject("TargetActor", MyPawn);
 	}
+	*/
 }
