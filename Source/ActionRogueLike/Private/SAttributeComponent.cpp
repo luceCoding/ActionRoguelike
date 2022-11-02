@@ -6,7 +6,6 @@
 // Sets default values for this component's properties
 USAttributeComponent::USAttributeComponent()
 {
-	Health = 100;
 }
 
 bool USAttributeComponent::IsAlive() const
@@ -14,10 +13,25 @@ bool USAttributeComponent::IsAlive() const
 	return Health > 0.0f;
 }
 
+bool USAttributeComponent::IsFullHealth() const
+{
+	return Health == HealthMax;
+}
+
+float USAttributeComponent::GetHealthMax() const
+{
+	return HealthMax;
+}
 
 bool USAttributeComponent::ApplyHealthChange(float Delta)
 {
+	float oldHealth = Health;
+	float NewHealth = FMath::Clamp(Health + Delta, 0.0f, HealthMax);
+
+	float ActualDelta = NewHealth - oldHealth;
+
 	Health += Delta;
-	OnHealthChanged.Broadcast(nullptr, this, Health, Delta);
-	return true;
+	UE_LOG(LogTemp, Log, TEXT("OnHealthChanged on AI. Delta: %f, Health: %f, ActualDelta: %f"), Delta, Health, ActualDelta);
+	OnHealthChanged.Broadcast(nullptr, this, Health, ActualDelta);
+	return ActualDelta != 0;
 }
