@@ -90,4 +90,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	void SpawnProjectile(TSubclassOf<AActor> ClassToSpawn);
+
+	UFUNCTION(Exec)
+		void HealSelf(float Amount = 100);
 };

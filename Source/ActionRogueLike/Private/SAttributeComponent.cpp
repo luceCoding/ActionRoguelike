@@ -28,6 +28,12 @@ bool USAttributeComponent::IsActorAlive(AActor* Actor)
 	return false;
 }
 
+bool USAttributeComponent::Kill(AActor* InstigatorActor)
+{
+	ApplyHealthChange(InstigatorActor, -GetHealthMax());
+	return true;
+}
+
 bool USAttributeComponent::IsAlive() const
 {
 	return Health > 0.0f;
@@ -45,12 +51,17 @@ float USAttributeComponent::GetHealthMax() const
 
 bool USAttributeComponent::ApplyHealthChange(AActor* InstigatorActor, float Delta)
 {
+	if (!GetOwner()->CanBeDamaged())
+	{
+		return false;
+	}
+
 	float oldHealth = Health;
 	float NewHealth = FMath::Clamp(Health + Delta, 0.0f, HealthMax);
 
 	float ActualDelta = NewHealth - oldHealth;
 
-	Health += Delta;
+	Health += ActualDelta;
 	UE_LOG(LogTemp, Log, TEXT("OnHealthChanged on AI. Delta: %f, Health: %f, ActualDelta: %f"), Delta, Health, ActualDelta);
 	OnHealthChanged.Broadcast(InstigatorActor, this, Health, ActualDelta);
 	return ActualDelta != 0;

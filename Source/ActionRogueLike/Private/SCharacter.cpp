@@ -191,3 +191,8 @@ void ASCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
 		GetWorld()->SpawnActor<AActor>(ClassToSpawn, SpawnTM, SpawnParams);
 	}
 }
+
+void ASCharacter::HealSelf(float Amount /* = 100 */)
+{
+	AttributeComp->ApplyHealthChange(this, Amount);
+}
