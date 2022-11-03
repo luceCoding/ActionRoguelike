@@ -20,6 +20,8 @@ public:
 
 protected:
 
+	void SetTargetActor(AActor* NewTarget);
+
 	virtual void PostInitializeComponents() override;
 
 	UFUNCTION()
