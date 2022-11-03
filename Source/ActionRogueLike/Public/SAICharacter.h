@@ -27,11 +27,14 @@ protected:
 	UFUNCTION()
 		void OnHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float NewHealth, float Delta);
 
+	UPROPERTY(VisibleAnywhere, Category = "Effects")
+		FName TimeToHitParamName;
+
 	UPROPERTY(VisibleAnywhere, Category = "Components")
-	UPawnSensingComponent* PawnSensingComp;
+		UPawnSensingComponent* PawnSensingComp;
 
 	UFUNCTION()
-	void OnPawnSeen(APawn* Pawn);
+		void OnPawnSeen(APawn* Pawn);
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 		USAttributeComponent* AttributeComp;

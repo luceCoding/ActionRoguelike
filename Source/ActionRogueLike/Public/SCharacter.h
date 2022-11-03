@@ -35,6 +35,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Attack")
 		UAnimMontage* AttackAnim;
 
+	UPROPERTY(VisibleAnywhere, Category = "Effects")
+		FName TimeToHitParamName;
+
 	UPROPERTY(VisibleAnywhere)
 		USpringArmComponent* SpringArmComp;
 
