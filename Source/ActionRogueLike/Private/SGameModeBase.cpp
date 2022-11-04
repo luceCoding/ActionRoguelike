@@ -9,6 +9,7 @@
 #include "EnvironmentQuery/EnvQueryTypes.h"
 #include "EngineUtils.h"
 #include "DrawDebugHelpers.h"
+#include "SCharacter.h"
 
 ASGameModeBase::ASGameModeBase()
 {
@@ -33,6 +34,21 @@ void ASGameModeBase::KillAll()
 			AttributeComp->Kill(this); // TODO: pass in player?
 		}
 	}
+}
+
+void ASGameModeBase::OnActorKilled(AActor* VictimActor, AActor* Killer)
+{
+	ASCharacter* Player = Cast<ASCharacter>(VictimActor);
+	if (Player)
+	{
+		FTimerHandle TimerHandle_RespawnDelay;
+		FTimerDelegate Delegate;
+		Delegate.BindUFunction(this, "RespawnPlayerElapsed", Player->GetController());
+
+		float RespawnDelay = 2.0f;
+		GetWorldTimerManager().SetTimer(TimerHandle_RespawnDelay,Delegate, RespawnDelay, false);
+	}
+	UE_LOG(LogTemp, Log, TEXT("%s: Victim: %s, Killer: %s"), __FUNCTION__, *GetNameSafe(VictimActor), *GetNameSafe(Killer));
 }
 
 
@@ -88,3 +104,15 @@ void ASGameModeBase::OnQueryCompleted(UEnvQueryInstanceBlueprintWrapper* QueryIn
 		DrawDebugSphere(GetWorld(), Locations[0], 50.0f, 20, FColor::Blue, false, 60.0f);
 	}
 }
+
+void ASGameModeBase::RespawnPlayerElapsed(AController* Controller)
+{
+	if (ensure(Controller))
+	{
+		AActor* DeadActor = Controller->GetPawn();
+		Controller->UnPossess();
+		RestartPlayer(Controller);
+		//DeadActor->Destroy();
+	}
+}
+
