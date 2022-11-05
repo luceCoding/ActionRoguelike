@@ -50,7 +50,7 @@ void ASGameModeBase::OnActorKilled(AActor* VictimActor, AActor* Killer)
 		float RespawnDelay = 2.0f;
 		GetWorldTimerManager().SetTimer(TimerHandle_RespawnDelay,Delegate, RespawnDelay, false);
 	}
-	UE_LOG(LogTemp, Log, TEXT("%s: Victim: %s, Killer: %s"), __FUNCTION__, *GetNameSafe(VictimActor), *GetNameSafe(Killer));
+	UE_LOG(LogTemp, Log, TEXT("OnActorKilled: Victim: %s, Killer: %s"), *GetNameSafe(VictimActor), *GetNameSafe(Killer));
 }
 
 
