@@ -57,6 +57,12 @@ bool USActionComponent::StartActionByName_Implementation(AActor* Instigator, FNa
 	{
 		if (Action && Action->ActionName == ActionName)
 		{
+			if (!Action->CanStart(Instigator))
+			{
+				FString FailedMsg = FString::Printf(TEXT("Failed to run: %s"), *ActionName.ToString());
+				GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, FailedMsg);
+				continue;
+			}
 			Action->StartAction(Instigator);
 			return true;
 		}
