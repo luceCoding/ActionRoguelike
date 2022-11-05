@@ -3,9 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "SProjectileBase.h"
-#include "Components/SphereComponent.h"
-#include "GameFramework/Actor.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "SMagicProjectile.generated.h"
 
@@ -18,13 +17,16 @@ public:
 	// Sets default values for this actor's properties
 	ASMagicProjectile();
 
-	UPROPERTY(EditDefaultsOnly, Category = "Damage")
-		float DamageAmount;
-
 protected:
 	
 	UFUNCTION()
 		void OnActorOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	UPROPERTY(EditDefaultsOnly, Category = "Damage")
+		FGameplayTag ParryTag;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Damage")
+		float DamageAmount;
 
 	virtual void PostInitializeComponents() override;
 };

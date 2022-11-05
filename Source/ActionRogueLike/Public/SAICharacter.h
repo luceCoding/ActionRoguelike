@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "SAICharacter.generated.h"
 
+class USActionComponent;
 class USWorldUserWidget;
 class UPawnSensingComponent;
 class USAttributeComponent;
@@ -42,6 +43,9 @@ protected:
 
 	UFUNCTION()
 		void OnPawnSeen(APawn* Pawn);
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+		USActionComponent* ActionComp;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 		USAttributeComponent* AttributeComp;

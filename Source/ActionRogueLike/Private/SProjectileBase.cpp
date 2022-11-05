@@ -24,7 +24,7 @@ ASProjectileBase::ASProjectileBase()
 
 	AudioComp = CreateDefaultSubobject<UAudioComponent>("AudioComp");
 	AudioComp->SetupAttachment(RootComponent);
-
+	
 	MovementComp = CreateDefaultSubobject<UProjectileMovementComponent>("ProjectileMoveComp");
 	MovementComp->bRotationFollowsVelocity = true;
 	MovementComp->bInitialVelocityInLocalSpace = true;

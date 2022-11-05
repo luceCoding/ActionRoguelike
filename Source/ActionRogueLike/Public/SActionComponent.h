@@ -22,10 +22,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Actions")
 		void AddAction(TSubclassOf<USAction> ActionClass);
 
-	UFUNCTION(BlueprintNativeEvent, Category = "Action")
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Action")
 		bool StartActionByName(AActor* Instigator, FName ActionName);
 
-	UFUNCTION(BlueprintNativeEvent, Category = "Action")
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Action")
 		bool StopActionByName(AActor* Instigator, FName ActionName);
 
 	// Sets default values for this component's properties
