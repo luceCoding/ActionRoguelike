@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
+#include "SActionEffect.h"
 #include "SProjectileBase.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "SMagicProjectile.generated.h"
@@ -27,6 +28,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Damage")
 		float DamageAmount;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Damage")
+	TSubclassOf<USActionEffect> BurningActionClass;
 
 	virtual void PostInitializeComponents() override;
 };
