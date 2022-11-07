@@ -24,6 +24,11 @@ public:
 
 protected:
 
+	// Reliable - Will always arrive, eventually.
+	// Unreliable - Not guaranteed, no retry.
+	UFUNCTION(Server, Reliable)
+		void ServerInteract(AActor* InFocus);
+
 	void FindBestInteractable();
 
 	UPROPERTY()
