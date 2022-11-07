@@ -11,9 +11,11 @@ void USWorldUserWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTim
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);
 
-	if (IsValid(AttachedActor))
+	if (!IsValid(AttachedActor))
 	{
 		RemoveFromParent();
+
+		UE_LOG(LogTemp, Warning, TEXT(" Attached Actor no longer valid, removing."))
 		return;
 	}
 
