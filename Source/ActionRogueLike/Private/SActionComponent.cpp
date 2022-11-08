@@ -13,7 +13,7 @@ USActionComponent::USActionComponent()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
-	// ...
+	SetIsReplicatedByDefault(true);
 }
 
 
@@ -76,6 +76,13 @@ bool USActionComponent::StartActionByName_Implementation(AActor* Instigator, FNa
 				GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, FailedMsg);
 				continue;
 			}
+
+			// Is Client?
+			if (!GetOwner()->HasAuthority())
+			{
+				ServerStartAction(Instigator, ActionName);
+			}
+
 			Action->StartAction(Instigator);
 			return true;
 		}
@@ -94,4 +101,10 @@ bool USActionComponent::StopActionByName_Implementation(AActor* Instigator, FNam
 		}
 	}
 	return false;
+}
+
+
+void USActionComponent::ServerStartAction_Implementation(AActor* Instigator, FName ActionName)
+{
+	StartActionByName(Instigator, ActionName);
 }

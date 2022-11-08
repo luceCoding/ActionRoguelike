@@ -4,12 +4,17 @@
 #include "SAttributeComponent.h"
 
 #include "SGameModeBase.h"
+#include "Net/UnrealNetwork.h"
 
 static TAutoConsoleVariable<bool> CVarDamageMultiplier(TEXT("su.DamageMultiplier"), 1.0f, TEXT("Global Damage Modifier for Attribute COmponent."), ECVF_Cheat);
 
 // Sets default values for this component's properties
 USAttributeComponent::USAttributeComponent()
 {
+	HealthMax = 100;
+	Health = HealthMax;
+
+	SetIsReplicatedByDefault(true);
 }
 
 USAttributeComponent* USAttributeComponent::GetAttributes(AActor* FromActor)
@@ -30,6 +35,7 @@ bool USAttributeComponent::IsActorAlive(AActor* Actor)
 	}
 	return false;
 }
+
 
 bool USAttributeComponent::Kill(AActor* InstigatorActor)
 {
@@ -72,7 +78,11 @@ bool USAttributeComponent::ApplyHealthChange(AActor* InstigatorActor, float Delt
 
 	Health += ActualDelta;
 	UE_LOG(LogTemp, Log, TEXT("OnHealthChanged on AI. Delta: %f, Health: %f, ActualDelta: %f"), Delta, Health, ActualDelta);
-	OnHealthChanged.Broadcast(InstigatorActor, this, Health, ActualDelta);
+	//OnHealthChanged.Broadcast(InstigatorActor, this, Health, ActualDelta);
+	if (ActualDelta != 0.0f)
+	{
+		MulticastHealthChanged(InstigatorActor, Health, ActualDelta);
+	}
 
 	// Died
 	if (ActualDelta < 0.0f && Health == 0.0f)
@@ -86,3 +96,18 @@ bool USAttributeComponent::ApplyHealthChange(AActor* InstigatorActor, float Delt
 
 	return ActualDelta != 0;
 }
+
+void USAttributeComponent::MulticastHealthChanged_Implementation(AActor* InstigatorActor, float NewHealth, float Delta)
+{
+	OnHealthChanged.Broadcast(InstigatorActor, this, NewHealth, Delta);
+}
+
+void USAttributeComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(USAttributeComponent, Health);
+	DOREPLIFETIME(USAttributeComponent, HealthMax);
+	//DOREPLIFETIME_CONDITION(USAttributeComponent, HealthMax, COND_OwnerOnly);
+}
+

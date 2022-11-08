@@ -26,11 +26,17 @@ public:
 
 protected:
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Attributes")
+	UPROPERTY(Replicated, EditDefaultsOnly, BlueprintReadOnly, Category = "Attributes")
 		float Health;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Attributes")
+	UPROPERTY(Replicated, EditDefaultsOnly, BlueprintReadOnly, Category = "Attributes")
 		float HealthMax;
+
+	//UPROPERTY(Replicatedusing="")
+	//bool bIsAlive;
+
+	UFUNCTION(NetMulticast, Reliable) // TODO: mark as unreliable once we moved the 'state' of our scharacter
+		void MulticastHealthChanged(AActor* InstigatorActor, float NewHealth, float Delta);
 	
 public:
 
