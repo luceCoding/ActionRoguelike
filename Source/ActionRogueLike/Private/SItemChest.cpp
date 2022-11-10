@@ -26,7 +26,11 @@ ASItemChest::ASItemChest()
 void ASItemChest::Interact_Implementation(APawn* InstigatorPawn)
 {
 	bLidOpened = !bLidOpened;
-	OnRep_LidOpened();
+	if (GetNetMode() == NM_DedicatedServer)
+	{
+		UE_LOG(LogTemp, Log, TEXT("====DEDICATED"));
+		OnRep_LidOpened();
+	}
 }
 
 void ASItemChest::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -38,6 +42,16 @@ void ASItemChest::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifet
 
 void ASItemChest::OnRep_LidOpened()
 {
+	/*
+	if (GetNetMode() == NM_DedicatedServer)
+	{
+		UE_LOG(LogTemp, Log, TEXT("====DEDICATED"));
+	}
+	if (GetNetMode() == NM_Client)
+	{
+		UE_LOG(LogTemp, Log, TEXT("====CLIENT"));
+	}
+	*/
 	float CurrPitch = bLidOpened ? TargetPitch : 0.0f;
 	LidMesh->SetRelativeRotation(FRotator(CurrPitch, 0, 0));
 }

@@ -54,13 +54,20 @@ void USActionComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 	}
 }
 
-void USActionComponent::AddAction(AActor* Instigator, TSubclassOf<USAction> ActionToAdd)
+void USActionComponent::AddAction(AActor* Instigator, TSubclassOf<USAction> ActionClass)
 {
-	if (!ensure(ActionToAdd))
+	if (!ensure(ActionClass))
 	{
 		return;
 	}
-	USAction* NewAction = NewObject<USAction>(GetOwner(), ActionToAdd);
+	// Skip for clients
+	if (!GetOwner()->HasAuthority())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Client attempting to AddAction. [Class: %s]"), *GetNameSafe(ActionClass));
+		return;
+	}
+
+	USAction* NewAction = NewObject<USAction>(GetOwner(), ActionClass);
 	if (ensure(NewAction))
 	{
 		NewAction->Initialize(this);
@@ -113,8 +120,16 @@ bool USActionComponent::StopActionByName_Implementation(AActor* Instigator, FNam
 	{
 		if (Action && Action->ActionName == ActionName)
 		{
-			Action->StopAction(Instigator);
-			return true;
+			if (Action->isRunning())
+			{
+				// Is Client?
+				if (!GetOwner()->HasAuthority())
+				{
+					ServerStartAction(Instigator, ActionName);
+				}
+				Action->StopAction(Instigator);
+				return true;
+			}
 		}
 	}
 	return false;
@@ -124,6 +139,11 @@ bool USActionComponent::StopActionByName_Implementation(AActor* Instigator, FNam
 void USActionComponent::ServerStartAction_Implementation(AActor* Instigator, FName ActionName)
 {
 	StartActionByName(Instigator, ActionName);
+}
+
+void USActionComponent::ServerStopAction_Implementation(AActor* Instigator, FName ActionName)
+{
+	StopActionByName(Instigator, ActionName);
 }
 
 void USActionComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const

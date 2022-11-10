@@ -20,7 +20,7 @@ public:
 		FGameplayTagContainer ActiveGameplayTags;
 
 	UFUNCTION(BlueprintCallable, Category = "Actions")
-		void AddAction(AActor* Instigator, TSubclassOf<USAction> ActionToAdd);
+		void AddAction(AActor* Instigator, TSubclassOf<USAction> ActionClass);
 
 	UFUNCTION(BlueprintCallable, Category = "Actions")
 		void RemoveAction(USAction* ActionToRemove);
@@ -37,7 +37,10 @@ public:
 protected:
 
 	UFUNCTION(Server, Reliable)
-	void ServerStartAction(AActor* Instigator, FName ActionName);
+		void ServerStartAction(AActor* Instigator, FName ActionName);
+
+	UFUNCTION(Server, Reliable)
+		void ServerStopAction(AActor* Instigator, FName ActionName);
 
 	UPROPERTY(EditAnywhere, Category = "Actions")
 		TArray<TSubclassOf<USAction>> DefaultActions;
