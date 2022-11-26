@@ -26,11 +26,21 @@ ASItemChest::ASItemChest()
 void ASItemChest::Interact_Implementation(APawn* InstigatorPawn)
 {
 	bLidOpened = !bLidOpened;
+	OnRep_LidOpened();
+	// Not required to filter from client, automatically handles this
+	/*
 	if (GetNetMode() == NM_DedicatedServer)
 	{
 		UE_LOG(LogTemp, Log, TEXT("====DEDICATED"));
 		OnRep_LidOpened();
 	}
+	*/
+}
+
+void ASItemChest::OnActorLoaded_Implementation()
+{
+	//ISGameplayInterface::OnActorLoaded_Implementation();
+	OnRep_LidOpened();
 }
 
 void ASItemChest::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
