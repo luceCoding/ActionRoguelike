@@ -28,7 +28,7 @@ ASGameModeBase::ASGameModeBase()
 void ASGameModeBase::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)
 {
 	Super::InitGame(MapName, Options, ErrorMessage);
-	LoadSaveGame();
+	//LoadSaveGame();
 }
 
 void ASGameModeBase::StartPlay()
@@ -36,6 +36,7 @@ void ASGameModeBase::StartPlay()
 	Super::StartPlay();
 
 	GetWorldTimerManager().SetTimer(TimerHandle_SpawnBots, this, &ASGameModeBase::SpawnBotTimerElapsed, SpawnTimerInterval, true);
+	LoadSaveGame();
 }
 
 void ASGameModeBase::HandleStartingNewPlayer_Implementation(APlayerController* NewPlayer)
@@ -216,7 +217,7 @@ void ASGameModeBase::LoadSaveGame()
 
 					ISGameplayInterface::Execute_OnActorLoaded(Actor);
 
-					break; // TODO: Replicate more than one.
+					break; //TODO: Fix
 				}
 			}
 		}
