@@ -36,4 +36,7 @@ protected:
 
 public:
 	USActionEffect();
+
+	UFUNCTION(BlueprintCallable, Category = "Action")
+		float GetTimeRemaining() const;
 };

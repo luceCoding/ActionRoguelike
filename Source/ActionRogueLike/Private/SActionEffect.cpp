@@ -11,6 +11,12 @@ USActionEffect::USActionEffect()
 	bAutoStart = true;
 }
 
+float USActionEffect::GetTimeRemaining() const
+{
+	float EndTime = TimeStarted + Duration;
+	return EndTime - GetWorld()->TimeSeconds;
+}
+
 void USActionEffect::StartAction_Implementation(AActor* Instigator)
 {
 	Super::StartAction_Implementation(Instigator);
