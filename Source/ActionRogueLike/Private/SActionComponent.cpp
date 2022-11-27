@@ -44,6 +44,7 @@ void USActionComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 	//GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::White, DebugMsg);
 
 	// Draw All Actions
+	/*
 	for (USAction* Action : Actions)
 	{
 		FColor TextColor = Action->isRunning() ? FColor::Blue : FColor::White;
@@ -52,6 +53,7 @@ void USActionComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 
 		LogOnScreen(this, ActionMsg, TextColor, 0.0f);
 	}
+	*/
 }
 
 void USActionComponent::AddAction(AActor* Instigator, TSubclassOf<USAction> ActionClass)
