@@ -19,13 +19,14 @@ ASPowerupActor::ASPowerupActor()
 
 	RespawnTime = 10.0f;
 	bIsActive = true;
+
+	bReplicates = true;
 }
 
 void ASPowerupActor::OnRep_IsActive()
 {
 	SetActorEnableCollision(bIsActive);
 	RootComponent->SetVisibility(bIsActive, true);
-	OnRep_IsActive();
 }
 
 void ASPowerupActor::ShowPowerup()
